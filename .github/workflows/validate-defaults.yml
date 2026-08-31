@@ -68,7 +68,7 @@ jobs:
           grep -q 'PROJECT_NUMBER: "4"' .github/workflows/sync-development-project.yml
           grep -q 'secrets.PROJECT_PAT' .github/workflows/sync-development-project.yml
           grep -q 'PROJECT_PAT is not configured' scripts/sync-project.mjs
-          grep -q 'existing project items are not overwritten\|Existing project items are not overwritten' README.md
+          grep -q '人間が設定済みの値は上書きしません' README.md
 
       - name: Check issue form safety language
         shell: bash
