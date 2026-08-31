@@ -1,0 +1,40 @@
+name: Sync EliteMay Development project
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview what would be added without changing the project
+        required: false
+        default: true
+        type: boolean
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-elitemay-development-project
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Sync open issues to project
+        env:
+          PROJECT_PAT: ${{ secrets.PROJECT_PAT }}
+          PROJECT_OWNER: EliteMay
+          PROJECT_NUMBER: "4"
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+        run: node scripts/sync-project.mjs

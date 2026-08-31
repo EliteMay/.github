@@ -28,6 +28,8 @@ jobs:
             .github/ISSUE_TEMPLATE/feature.yml
             .github/ISSUE_TEMPLATE/config.yml
             .github/workflows/reusable-web-baseline.yml
+            .github/workflows/sync-development-project.yml
+            scripts/sync-project.mjs
           )
           for file in "${required[@]}"; do
             if [ ! -f "$file" ]; then
@@ -44,7 +46,11 @@ jobs:
             .github/ISSUE_TEMPLATE/feature.yml \
             .github/ISSUE_TEMPLATE/config.yml \
             .github/workflows/reusable-web-baseline.yml \
+            .github/workflows/sync-development-project.yml \
             .github/workflows/validate-defaults.yml
+
+      - name: Check project sync JavaScript syntax
+        run: node --check scripts/sync-project.mjs
 
       - name: Validate shared workflow contract
         shell: bash
@@ -53,6 +59,16 @@ jobs:
           grep -q 'workflow_call:' .github/workflows/reusable-web-baseline.yml
           grep -q '^permissions:' .github/workflows/reusable-web-baseline.yml
           grep -Eq '^  contents: read$' .github/workflows/reusable-web-baseline.yml
+
+      - name: Validate project sync contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'PROJECT_PAT' .github/workflows/sync-development-project.yml
+          grep -q 'PROJECT_NUMBER: "4"' .github/workflows/sync-development-project.yml
+          grep -q 'secrets.PROJECT_PAT' .github/workflows/sync-development-project.yml
+          grep -q 'PROJECT_PAT is not configured' scripts/sync-project.mjs
+          grep -q '人間が設定済みの値は上書きしません' README.md
 
       - name: Check issue form safety language
         shell: bash
