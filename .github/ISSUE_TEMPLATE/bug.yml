@@ -1,0 +1,98 @@
+name: Bug report
+description: 不具合の再現情報と診断Evidenceを揃えて報告します。
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        再現に必要な情報だけを記入してください。API Key、Token、Cookie、Password、個人情報、未Sanitizeのログ全文は貼らないでください。
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / Build
+      description: 分かる範囲でApp Version、Build、Commit等を記入してください。
+      placeholder: "例: v0.18.5 / build 20260831-1"
+
+  - type: input
+    id: area
+    attributes:
+      label: 発生画面・機能
+      placeholder: "例: Settings > Audio / Library import"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現手順
+      description: 問題が起きるまでに行った操作を順番に記入してください。
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+      description: 本来どうなるべきだったかを記入してください。
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+      description: 実際に何が起きたかを記入してください。
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproducibility
+    attributes:
+      label: 再現性
+      options:
+        - 毎回
+        - 高確率
+        - ときどき
+        - 1回だけ
+        - 不明
+    validations:
+      required: true
+
+  - type: input
+    id: error_id
+    attributes:
+      label: Error ID
+      description: 画面やDiagnosticsにError IDが出ている場合だけ記入してください。
+      placeholder: "例: ERR-ABC123"
+
+  - type: input
+    id: diagnostic_snapshot
+    attributes:
+      label: Diagnostic Snapshot ID
+      description: Remote Diagnostic Handoff等でSanitize済みSnapshotを保存した場合だけ記入してください。
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: 問題に関係しそうな場合のみOS / Browser / Device等を記入してください。
+      placeholder: "例: Windows 10 / Firefox 151"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 補足
+      description: Screenshot、短いSanitize済みログ、関連Issue等があれば追加してください。
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: Secret、Token、Cookie、Password、個人情報を本文へ含めていません。
+          required: true
