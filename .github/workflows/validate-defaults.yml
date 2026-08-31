@@ -1,0 +1,62 @@
+name: Validate shared GitHub defaults
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required files
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            README.md
+            CONTRIBUTING.md
+            SECURITY.md
+            SUPPORT.md
+            PULL_REQUEST_TEMPLATE.md
+            .github/ISSUE_TEMPLATE/bug.yml
+            .github/ISSUE_TEMPLATE/feature.yml
+            .github/ISSUE_TEMPLATE/config.yml
+            .github/workflows/reusable-web-baseline.yml
+          )
+          for file in "${required[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "Missing required file: $file"
+              exit 1
+            fi
+          done
+
+      - name: Parse YAML
+        shell: bash
+        run: |
+          ruby -e 'require "yaml"; ARGV.each { |f| YAML.load_file(f); puts "Parsed #{f}" }' \
+            .github/ISSUE_TEMPLATE/bug.yml \
+            .github/ISSUE_TEMPLATE/feature.yml \
+            .github/ISSUE_TEMPLATE/config.yml \
+            .github/workflows/reusable-web-baseline.yml \
+            .github/workflows/validate-defaults.yml
+
+      - name: Validate shared workflow contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'workflow_call:' .github/workflows/reusable-web-baseline.yml
+          grep -q '^permissions:' .github/workflows/reusable-web-baseline.yml
+          grep -Eq '^  contents: read$' .github/workflows/reusable-web-baseline.yml
+
+      - name: Check issue form safety language
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Eq 'Secret|Token' .github/ISSUE_TEMPLATE/bug.yml
+          grep -Eq 'Secret|Token' .github/ISSUE_TEMPLATE/feature.yml
