@@ -1,0 +1,61 @@
+name: Feature / improvement
+description: 改善したい問題、目的、制約を整理して提案します。
+title: "[Improve] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        「何を追加するか」だけでなく、「何を良くしたいか」を中心に記入してください。Project固有仕様はIssueだけを正本にせず、採用時にREADME / Spec / Project Rules等へ反映します。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 解決したい問題
+      description: 現在どこが不便・分かりにくい・危険・不足しているかを記入してください。
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: 目標状態
+      description: 実装後にどうなれば成功かを記入してください。
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 実装案
+      description: 方法が決まっている場合だけ記入してください。未定でも構いません。
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: 崩してはいけない仕様・制約
+      description: 保存互換性、GitHub Pages、Electron、無料条件、既存URL等があれば記入してください。
+
+  - type: dropdown
+    id: user_test
+    attributes:
+      label: User Testが必要そうか
+      options:
+        - 必要そう
+        - 不要そう
+        - 不明
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 参考Evidence
+      description: Screenshot、関連Issue、Project Learning、公式Documentation等があれば記入してください。
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: Secret、Token、Cookie、Password、個人情報を本文へ含めていません。
+          required: true
