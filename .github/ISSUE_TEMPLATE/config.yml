@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Web Project Guide
+    url: https://github.com/EliteMay/web-project-guide
+    about: Web / Electron制作の共通判断基準と品質ルールを確認します。
