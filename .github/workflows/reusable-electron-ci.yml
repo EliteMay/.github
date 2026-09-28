@@ -1,0 +1,77 @@
+name: Reusable Electron CI
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version used by the caller
+        required: false
+        type: string
+        default: '22'
+      install-command:
+        description: Dependency install command
+        required: false
+        type: string
+        default: 'npm install --no-audit --no-fund'
+      test-command:
+        description: Test command
+        required: false
+        type: string
+        default: 'npm test'
+      build-command:
+        description: Windows build command
+        required: false
+        type: string
+        default: 'npm run build:win'
+      run-tests:
+        description: Run the test command before building
+        required: false
+        type: boolean
+        default: true
+      artifact-name:
+        description: Uploaded artifact name
+        required: false
+        type: string
+        default: 'electron-windows'
+      artifact-path:
+        description: Path or glob uploaded after the build
+        required: false
+        type: string
+        default: 'dist/*'
+
+permissions:
+  contents: read
+
+jobs:
+  electron-ci:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout caller repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ inputs.node-version }}
+          package-manager-cache: false
+
+      - name: Install dependencies
+        shell: pwsh
+        run: ${{ inputs.install-command }}
+
+      - name: Test
+        if: ${{ inputs.run-tests }}
+        shell: pwsh
+        run: ${{ inputs.test-command }}
+
+      - name: Build Windows application
+        shell: pwsh
+        run: ${{ inputs.build-command }}
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
+          if-no-files-found: error
