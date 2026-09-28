@@ -43,7 +43,23 @@ jobs:
       - name: Checkout caller repository
         uses: actions/checkout@v7
 
+      - name: Check dependency graph availability
+        id: dependency-graph
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if gh api "repos/${GITHUB_REPOSITORY}/dependency-graph/compare/${BASE_SHA}...${HEAD_SHA}" > /dev/null 2>&1; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Dependency graph is not enabled or unavailable; Dependency Review is skipped."
+          fi
+
       - name: Review dependency changes
+        if: ${{ steps.dependency-graph.outputs.available == 'true' }}
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: ${{ inputs.fail-on-severity }}
