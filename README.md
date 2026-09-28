@@ -35,6 +35,68 @@ jobs:
 
 Workflow更新は1〜2 ProjectでPilotしてから段階展開します。
 
+## Reusable Electron CI
+
+`.github/workflows/reusable-electron-ci.yml` は、Electron / Node.js製Windowsアプリで共通化しやすいCIだけを提供します。
+
+- Windows runner
+- Node.js setup
+- npm install
+- Unit test
+- Windows build
+- Actions Artifact upload
+
+Updater成果物の個数確認、Production dependency確認、Release命名規約など、Project固有Contractは各Repository側へ残します。
+
+呼び出し側は中央Workflowの確定Commit SHAへ固定します。
+
+```yaml
+jobs:
+  electron:
+    uses: EliteMay/.github/.github/workflows/reusable-electron-ci.yml@<commit-sha>
+    with:
+      node-version: "22"
+      artifact-name: my-app-windows
+      artifact-path: "dist/*"
+```
+
+## Reusable JavaScript Security
+
+`.github/workflows/reusable-javascript-security.yml` は、JavaScript / TypeScript系Repository向けの共通Security Baselineです。
+
+- CodeQL
+- security-extended queries
+- Dependency Review
+- Pull RequestでHigh以上の新規脆弱性を検出した場合に失敗
+
+Callerは少なくとも次のPermissionを許可します。
+
+```yaml
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+```
+
+Dependency ReviewはPull Request時だけ実行し、CodeQLはPush / Pull Request / Schedule等のCaller eventに従います。
+
+## Dependency Update Baseline
+
+このRepository自身は `.github/dependabot.yml` でGitHub Actionsを週次監視します。
+
+npmを使うElectron Repositoryでは、原則として次を監視します。
+
+- npm dependencies
+- GitHub Actions dependencies
+
+Electron系Packageはminor / patchをGroup化し、更新PRが過剰に増えないようにします。
+
+## Release Provenance
+
+ユーザーが実行するWindows Setup.exeを公開するRepositoryでは、Release Workflow内でArtifact Attestationを生成します。
+
+頻繁なCI成果物ではなく、実際に配布するバイナリを対象にします。Project固有のRelease Workflow自体は各Repositoryを正本とします。
+
 ## EliteMay Development Project Sync
 
 `.github/workflows/sync-development-project.yml` と `scripts/sync-project.mjs` は、User Project `EliteMay Development`（Project #4）へのIssue登録を中央で自動化します。
