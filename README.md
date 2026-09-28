@@ -78,7 +78,7 @@ permissions:
   security-events: write
 ```
 
-Dependency ReviewはPull Request時だけ実行し、CodeQLはPush / Pull Request / Schedule等のCaller eventに従います。
+Dependency ReviewはPull Request時だけ実行します。RepositoryでDependency graphが利用できない場合は自動でスキップし、利用可能になれば同じWorkflowのまま実行されます。CodeQLはPush / Pull Request / Schedule等のCaller eventに従います。
 
 ## Dependency Update Baseline
 
