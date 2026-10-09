@@ -15,6 +15,24 @@
 
 Project固有の仕様・Architecture・Storage Schema・Test Contract・Release Contractは各Project Repositoryを正本とします。
 
+
+## GitHub全体の入口・担当
+
+同じ情報を複数のRepositoryへコピーせず、知りたい内容に対応する正本を参照します。
+
+| 知りたいこと・やりたいこと | 正本 |
+| --- | --- |
+| 共通Issue / PR様式、GitHub Actions共通部品 | **この `.github` Repository** |
+| Web・Electron開発の共通ルール、判断基準 | [web-project-guide](https://github.com/EliteMay/web-project-guide) |
+| 自動検証・開発ループの共通実行コード | [web-project-runtime](https://github.com/EliteMay/web-project-runtime) |
+| Web制作の要件定義から実装への引き継ぎ手順 | [web-project-workflow](https://github.com/EliteMay/web-project-workflow) |
+| 個別アプリのコード、要件、テスト、リリース | **そのアプリ自身のRepository** |
+| AIとの横断タスク・判断・引き継ぎ | [chatgpt-workspace](https://github.com/EliteMay/chatgpt-workspace)（非公開・管理者用） |
+| 実行履歴・検証証跡などの非公開作業データ | [web-project-data](https://github.com/EliteMay/web-project-data)（非公開・管理者用） |
+
+各Repositoryの「About」には短い用途説明と検索しやすいTopicsを設定します。READMEには利用方法と正本へのリンクを置き、実行時点の一覧や保留/アーカイブ判断を共通ルールへ固定しません。
+
+
 ## Reusable Web Baseline
 
 `.github/workflows/reusable-web-baseline.yml` は、複数Web Projectで共通しやすい軽量CIだけを提供します。
