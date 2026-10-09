@@ -1,0 +1,77 @@
+name: Manage public repository About metadata
+
+on:
+  pull_request:
+    paths:
+      - "config/public-repository-metadata.json"
+      - "scripts/manage-repository-metadata.mjs"
+      - "scripts/manage-repository-metadata.test.mjs"
+      - ".github/workflows/manage-repository-metadata.yml"
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "Repository name (pilot: .github) or all"
+        type: string
+        default: ".github"
+        required: true
+      apply:
+        description: "Apply metadata changes (default is safe read-only preview)"
+        type: boolean
+        default: false
+      confirm:
+        description: "To write, enter exactly APPLY_METADATA"
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repository-metadata-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify catalog and safety invariants
+        run: node --test scripts/manage-repository-metadata.test.mjs
+
+      - name: Preview public repository metadata
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          METADATA_SCOPE: ${{ inputs.scope || '.github' }}
+          APPLY_METADATA: "false"
+        run: node scripts/manage-repository-metadata.mjs
+
+      - name: Validate explicit apply request
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.apply }}
+        env:
+          METADATA_CONFIRM: ${{ inputs.confirm }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${METADATA_CONFIRM}" != "APPLY_METADATA" ]; then
+            echo "::error::Enter APPLY_METADATA to authorize a metadata write."
+            exit 1
+          fi
+          if [ "${GITHUB_REF}" != "refs/heads/main" ]; then
+            echo "::error::Metadata writes are permitted only from main."
+            exit 1
+          fi
+
+      - name: Apply approved metadata (administration-scoped token)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.apply }}
+        env:
+          REPO_METADATA_TOKEN: ${{ secrets.REPO_METADATA_TOKEN }}
+          METADATA_SCOPE: ${{ inputs.scope }}
+          APPLY_METADATA: "true"
+          METADATA_CONFIRM: ${{ inputs.confirm }}
+        run: node scripts/manage-repository-metadata.mjs

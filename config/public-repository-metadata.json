@@ -1,0 +1,322 @@
+{
+  "owner": "EliteMay",
+  "scope": "public-only",
+  "description": "2026-10-09 reviewed About candidates. Fill only missing descriptions, append topics; never touch private repos.",
+  "repositories": [
+    {
+      "name": ".github",
+      "description": "EliteMay全リポジトリ共通のIssue・PRテンプレートとGitHub Actions基盤",
+      "topics": [
+        "elite-core",
+        "github-actions",
+        "repository-management"
+      ]
+    },
+    {
+      "name": "AI-Hub",
+      "description": "複数のAI・開発ツールを集約するデスクトップハブ",
+      "topics": [
+        "elite-tool",
+        "electron",
+        "desktop-app"
+      ]
+    },
+    {
+      "name": "ap-study-guide",
+      "description": "応用情報技術者試験の本質理解・問題学習サイト",
+      "topics": [
+        "elite-app",
+        "study-guide",
+        "github-pages"
+      ]
+    },
+    {
+      "name": "asmr",
+      "description": "ASMR動画やチャンネルを探して再生するWebアプリ",
+      "topics": [
+        "elite-app",
+        "asmr",
+        "web-app"
+      ]
+    },
+    {
+      "name": "aviutl-plugin-foundation",
+      "description": "AviUtl向けプラグイン制作のテンプレートと開発基盤",
+      "topics": [
+        "elite-tool",
+        "aviutl",
+        "developer-tools"
+      ]
+    },
+    {
+      "name": "aws-study-guide",
+      "description": "AWSの基礎知識とサービスを学ぶサイト",
+      "topics": [
+        "elite-app",
+        "aws",
+        "study-guide"
+      ]
+    },
+    {
+      "name": "BuyLens",
+      "description": "買い物候補の比較・管理を支援するWebアプリ",
+      "topics": [
+        "elite-legacy",
+        "shopping",
+        "web-app"
+      ]
+    },
+    {
+      "name": "deep-factory",
+      "description": "Godot製の工場系ゲームプロジェクト",
+      "topics": [
+        "elite-app",
+        "godot",
+        "game"
+      ]
+    },
+    {
+      "name": "design-shelf",
+      "description": "配色・レイアウトを比較してWeb制作指示を作るツール",
+      "topics": [
+        "elite-legacy",
+        "web-design",
+        "github-pages"
+      ]
+    },
+    {
+      "name": "english-study",
+      "description": "英語の仕組みを理解するための学習サイト",
+      "topics": [
+        "elite-app",
+        "study-guide",
+        "github-pages"
+      ]
+    },
+    {
+      "name": "foundation-runtime-test",
+      "description": "Game Foundationの実行動作検証用リポジトリ",
+      "topics": [
+        "elite-test",
+        "godot",
+        "game-development"
+      ]
+    },
+    {
+      "name": "foundation-standard-test",
+      "description": "Game Foundation標準構成の検証用リポジトリ",
+      "topics": [
+        "elite-test",
+        "godot",
+        "game-development"
+      ]
+    },
+    {
+      "name": "foundation-starter-test-2",
+      "description": "Game Foundationスターターの動作検証用リポジトリ",
+      "topics": [
+        "elite-test",
+        "godot",
+        "game-development"
+      ]
+    },
+    {
+      "name": "game",
+      "description": "ブラウザゲームを公開・管理するゲームハブ",
+      "topics": [
+        "elite-app",
+        "browser-game",
+        "github-pages"
+      ]
+    },
+    {
+      "name": "game-dev-hub",
+      "description": "Godot・Webゲーム制作と検証を支援するデスクトップハブ",
+      "topics": [
+        "elite-tool",
+        "game-development",
+        "electron"
+      ]
+    },
+    {
+      "name": "github-guide",
+      "description": "GitHubの使い方・用語・操作場所を調べるガイドサイト",
+      "topics": [
+        "elite-legacy",
+        "github",
+        "documentation"
+      ]
+    },
+    {
+      "name": "godot-game-foundation",
+      "description": "Godotゲームの共通機能・スターター・検証基盤",
+      "topics": [
+        "elite-tool",
+        "godot",
+        "game-development"
+      ]
+    },
+    {
+      "name": "home-workout-guide",
+      "description": "自宅向け筋トレの種目・フォーム・安全情報の図鑑",
+      "topics": [
+        "elite-app",
+        "fitness",
+        "github-pages"
+      ]
+    },
+    {
+      "name": "java",
+      "description": "授業内容・つまずき解説・演習をまとめたJava学習サイト",
+      "topics": [
+        "elite-app",
+        "java",
+        "study-guide"
+      ]
+    },
+    {
+      "name": "local-ai-lab",
+      "description": "ローカルLLM・AIエージェントの運用・研究・監査基盤",
+      "topics": [
+        "elite-tool",
+        "local-ai",
+        "llm"
+      ]
+    },
+    {
+      "name": "lyrictube",
+      "description": "歌詞・動画の整理と再生を扱うWebアプリ",
+      "topics": [
+        "elite-app",
+        "web-app",
+        "music"
+      ]
+    },
+    {
+      "name": "osu-hub",
+      "description": "osu!関連の支援機能をまとめたアプリ・サイト",
+      "topics": [
+        "elite-app",
+        "osu",
+        "desktop-app"
+      ]
+    },
+    {
+      "name": "pc-agent",
+      "description": "ChatGPTからWindows PCを承認付きで安全に操作するためのAgent",
+      "topics": [
+        "elite-tool",
+        "windows",
+        "automation"
+      ]
+    },
+    {
+      "name": "site-min",
+      "description": "Health SupportとKaito PC Agent用OAuth画面が共存。認証依存の調査まで保持",
+      "topics": [
+        "elite-app",
+        "web-app",
+        "oauth"
+      ]
+    },
+    {
+      "name": "Skin-Aim-Trainer",
+      "description": "ゲームのエイム練習向けトレーナー",
+      "topics": [
+        "elite-app",
+        "godot",
+        "aim-trainer"
+      ]
+    },
+    {
+      "name": "Tarkov-Field-Manual",
+      "description": "Escape from Tarkovの初心者向け攻略ガイド",
+      "topics": [
+        "elite-legacy",
+        "tarkov",
+        "study-guide"
+      ]
+    },
+    {
+      "name": "type-tower",
+      "description": "TYPE TOWERの制作方針・授業ロードマップ保管",
+      "topics": [
+        "elite-legacy",
+        "school-project",
+        "typing-game"
+      ]
+    },
+    {
+      "name": "type-tower-a",
+      "description": "TYPE TOWERのゲーム本体・教材データ保管",
+      "topics": [
+        "elite-legacy",
+        "school-project",
+        "typing-game"
+      ]
+    },
+    {
+      "name": "VALORANT-Knowledge-Lab",
+      "description": "VALORANTの知識・研究を整理するプロジェクト",
+      "topics": [
+        "elite-legacy",
+        "valorant",
+        "knowledge-base"
+      ]
+    },
+    {
+      "name": "valorant-lineup",
+      "description": "VALORANTのラインアップを調べるWebサイト",
+      "topics": [
+        "elite-app",
+        "valorant",
+        "github-pages"
+      ]
+    },
+    {
+      "name": "valorant-review",
+      "description": "VALORANTの試合データ収集・分析・振り返りアプリ",
+      "topics": [
+        "elite-app",
+        "valorant",
+        "electron"
+      ]
+    },
+    {
+      "name": "video-plugin-dev-hub",
+      "description": "動画編集プラグイン開発のためのデスクトップ支援ツール",
+      "topics": [
+        "elite-tool",
+        "electron",
+        "developer-tools"
+      ]
+    },
+    {
+      "name": "web-project-guide",
+      "description": "Web・Electron・ゲーム関連の共通開発ルールと品質基準",
+      "topics": [
+        "elite-core",
+        "development-guide",
+        "documentation"
+      ]
+    },
+    {
+      "name": "web-project-runtime",
+      "description": "共通開発ループ・検証・回復処理の実行基盤",
+      "topics": [
+        "elite-core",
+        "developer-tools",
+        "automation"
+      ]
+    },
+    {
+      "name": "web-project-workflow",
+      "description": "Webサイト制作の要件定義と専用開発プロジェクトへの引き継ぎ手順",
+      "topics": [
+        "elite-core",
+        "project-management",
+        "documentation"
+      ]
+    }
+  ]
+}
