@@ -46,6 +46,19 @@ Project固有の仕様・Architecture・Storage Schema・Test Contract・Release
 
 実装: [scripts/audit-repositories.mjs](scripts/audit-repositories.mjs)。この監査は`web-project-guide`の共通ルールに従う**現況確認ツール**であり、監査結果をNormative Ruleへコピーしません。
 
+## Repository About metadataの安全な適用
+
+全35件の**公開**Repositoryについて、Description / Topicsの提案を[機械可読カタログ](config/public-repository-metadata.json)へ記録しています。公開Repository向けに、[Manage public repository About metadata](.github/workflows/manage-repository-metadata.yml) から差分を確認できます。
+
+1. **Preview（読み取り専用）:** ActionsからWorkflowを手動実行し、`scope`に`.github`（1件）または`all`（公開35件）、`apply=false` を指定。結果はJob Summaryへ出ます。追加のSecret不要。
+2. **Write（明示実行のみ）:** [GitHubの公式仕様](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28)によりRepositoryのAbout / Topics更新には**Administration: write**が必要です。対象となる**公開Repositoryだけ**に権限を与えた専用Fine-grained PATをSecret `REPO_METADATA_TOKEN` として`.github`のActionsへ設定してください（このREADMEやIssueに実トークンを記録しない）。
+3. 最初は`scope=.github`でPreviewを確認し、必要な場合だけ`apply=true`、`confirm=APPLY_METADATA`で手動実行します。認証情報の権限確認後に、他のRepositoryへ段階展開します。
+4. `scope=all`ではカタログ記載の公開Repositoryを対象にします。**Private Repository 2件は対象外**です。リポジトリが非公開化・アーカイブ・改名された場合は適用を拒否します。
+
+安全境界: `pull_request`ではモックテストと**プレビューのみ**。Writeは**mainの手動実行に限定**。既存のDescriptionは上書きせず、既存Topicsを維持したまま不足タグのみ追加します。成功・失敗はGitHub Actionsへ記録され、失敗後も再実行できる構造です。コード、公開URL、Rulesets、Secretの内容は更新しません。
+
+**注意:** 専用トークンの発行・Secret設定がない限り、実際のAbout設定は変更されません。既存の`PROJECT_PAT`を流用しません。また、この仕組みはBranch protectionの設定・変更には使いません。
+
 ## Reusable Web Baseline
 
 `.github/workflows/reusable-web-baseline.yml` は、複数Web Projectで共通しやすい軽量CIだけを提供します。
