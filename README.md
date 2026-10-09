@@ -33,6 +33,19 @@ Project固有の仕様・Architecture・Storage Schema・Test Contract・Release
 各Repositoryの「About」には短い用途説明と検索しやすいTopicsを設定します。READMEには利用方法と正本へのリンクを置き、実行時点の一覧や保留/アーカイブ判断を共通ルールへ固定しません。
 
 
+## Public Repository Audit（読み取り専用）
+
+[Audit public repositories (read only)](.github/workflows/audit-public-repositories.yml) は、**必要なときだけ手動実行できる監査Workflow**です。
+
+- **使い方:** `Actions → Audit public repositories (read only) → Run workflow`。実行結果はJobの`Summary`に表示します。
+- **対象:** `EliteMay`の**公開Repositoryのみ**。Private Repositoryは検出対象から明示的に除外するため、出力を「アカウント全件の監査」とは呼びません。
+- **確認内容:** READMEの有無 / Description・Topicsの設定状況 / Default Branchの保護フラグ。実際のRulesetの内容、Actions実行結果、GitHub Pagesの動作までは確認しません。
+- **権限:** `GITHUB_TOKEN` + `contents: read`。外部サービス・有料API・追加PATは不要。REST APIはGETのみで、AboutやRuleset、既存Repositoryの設定を変更しません。
+- **検証:** [audit-repositories.test.mjs](scripts/audit-repositories.test.mjs) のモックテストを実行してからAPI監査します。監査は不足項目を報告しますが、その存在を理由にCI失敗へはしません。
+- **利用上の注意:** レート制限やAPIアクセス失敗時はレポートを未完了としてエラー終了します。機密なPrivate Repositoryを含む診断情報を、このPublic RepositoryのSummary / Artifact / Commitへ出力しません。
+
+実装: [scripts/audit-repositories.mjs](scripts/audit-repositories.mjs)。この監査は`web-project-guide`の共通ルールに従う**現況確認ツール**であり、監査結果をNormative Ruleへコピーしません。
+
 ## Reusable Web Baseline
 
 `.github/workflows/reusable-web-baseline.yml` は、複数Web Projectで共通しやすい軽量CIだけを提供します。

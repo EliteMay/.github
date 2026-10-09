@@ -1,0 +1,34 @@
+name: Audit public repositories (read only)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/audit-repositories.mjs"
+      - "scripts/audit-repositories.test.mjs"
+      - ".github/workflows/audit-public-repositories.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Unit tests
+        run: node --test scripts/audit-repositories.test.mjs
+
+      - name: Public-only inventory report
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REPOSITORY_OWNER: EliteMay
+        run: node scripts/audit-repositories.mjs
