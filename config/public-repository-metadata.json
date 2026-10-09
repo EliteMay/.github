@@ -212,7 +212,7 @@
     },
     {
       "name": "site-min",
-      "description": "Health SupportとKaito PC Agent用OAuth画面が共存。認証依存の調査まで保持",
+      "description": "Health SupportとPC Agent OAuth旧URLの互換転送ページを保持するWebサイト",
       "topics": [
         "elite-app",
         "web-app",
