@@ -1,5 +1,6 @@
 import { appendFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { resolve } from "node:path";
 
 const DEFAULT_OWNER = "EliteMay";
 const API = "https://api.github.com";
@@ -72,6 +73,7 @@ export function markdownReport(repos, owner = DEFAULT_OWNER) {
 export async function audit({ owner = DEFAULT_OWNER, get, concurrency = 4 }) {
   if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 10) throw new Error("concurrency must be 1 to 10");
   const repos = await listPublicOwnerRepos(get, owner);
+  if (!repos.length) throw new Error("No public repositories found; refusing to report an empty audit");
   const result = new Array(repos.length);
   let next = 0;
   const workers = Array.from({ length: Math.min(concurrency, repos.length) }, async () => {
@@ -86,7 +88,8 @@ export async function audit({ owner = DEFAULT_OWNER, get, concurrency = 4 }) {
 
 export function githubGet(token, fetchImpl = fetch) {
   if (!token) throw new Error("Set GITHUB_TOKEN or GH_TOKEN (read-only access is sufficient)");
-  return async function get(path, { notFound } = {}) {
+  return async function get(path, options = {}) {
+    const { notFound } = options;
     if (!path.startsWith("/") || path.startsWith("//")) throw new Error("Invalid API path");
     const response = await fetchImpl(API + path, {
       method: "GET",
@@ -96,7 +99,7 @@ export function githubGet(token, fetchImpl = fetch) {
         "User-Agent": "EliteMay-repository-audit"
       }
     });
-    if (response.status === 404 && Object.hasOwn(arguments[1] || {}, "notFound")) return notFound;
+    if (response.status === 404 && Object.hasOwn(options, "notFound")) return notFound;
     if (!response.ok) throw new Error(`GitHub GET ${path} failed: HTTP ${response.status}`);
     return response.json();
   };
@@ -109,7 +112,7 @@ async function main() {
   if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, report + "\n", "utf8");
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === fileURLToPath(new URL("file://" + process.argv[1]))) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   main().catch((error) => {
     console.error(error.message);
     process.exitCode = 1;
