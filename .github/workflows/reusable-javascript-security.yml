@@ -22,16 +22,16 @@ jobs:
       security-events: write
     steps:
       - name: Checkout caller repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (2026-10-22)
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4 (2026-10-22)
         with:
           languages: javascript-typescript
           queries: security-extended
 
       - name: Analyze
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4 (2026-10-22)
 
   dependency-review:
     name: Dependency Review
@@ -41,7 +41,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout caller repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7 (2026-10-22)
 
       - name: Check dependency graph availability
         id: dependency-graph
@@ -55,11 +55,12 @@ jobs:
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::Dependency graph is not enabled or unavailable; Dependency Review is skipped."
+            echo "::error::Dependency Graph comparison is unavailable. Dependency Review did not run; enable the dependency graph or inspect its API permissions."
+            exit 1
           fi
 
       - name: Review dependency changes
         if: ${{ steps.dependency-graph.outputs.available == 'true' }}
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4 branch (2026-10-22)
         with:
           fail-on-severity: ${{ inputs.fail-on-severity }}
